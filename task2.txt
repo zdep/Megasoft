@@ -1,0 +1,58 @@
+﻿Задача №2.
+
+Знания MySQL + оптимизировать запросы
+Имеется 3 таблицы: info, data, link, есть запрос для получения данных:
+select * from data,link,info where link.info_id = info.id and link.data_id = data.id
+предложить варианты оптимизации:
+    таблиц
+    запроса.
+
+Запросы для создания таблиц:
+CREATE TABLE `info` (
+        `id` int(11) NOT NULL auto_increment,
+       `name` varchar(255) default NULL,
+        `desc` text default NULL,
+        PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251;
+
+CREATE TABLE `data` (
+        `id` int(11) NOT NULL auto_increment,
+        `date` date default NULL,
+        `value` INT(11) default NULL,
+        PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251;
+
+CREATE TABLE `link` (
+        `data_id` int(11) NOT NULL,
+        `info_id` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=cp1251;
+
+https://megasoft.ru/tests/phpdeveloper/
+
+Ответ:
+	Неизвестно для чего применяются эти таблицы. Если для связи многие-ко многим, то
+такая структура имеет право на жизнь. Конечно нарушаются правила нормализации из-за
+отсутствующего primary key в таблице link, но работать будет. Еще я бы добавил в неё
+индексы по обоим полям и, возможно сотавные индексы (но тут надо знать больше о задаче).
+	Если необходимо связать данные один-ко многим, то достаточно и 2 двух таблиц, info 
+и data без промежуточной, добавив поле info_id в таблицу data. Работает когда данных в 
+data намного меньше, чем в info.
+	Ну и третий вариант, если схема один-к одному и данных в info и data, примерно 
+одинаково, то можно обойтись одной таблицей.
+	В зависимости от вариантов модифицируется запрос.
+
+	Но, могу предположить, что запрос верный и используется такая схема, тогда
+можно модифицировать так:
+
+	select i.id, i.name, i.desc, d.date, d.value
+	#, d.id data_id - если нужна 
+	from data d, link l, info i
+	where
+	l.info_id = i.id
+	and l.data_id = d.id
+
+
+
+
+
+

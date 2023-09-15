@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+<title>task5</title>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<style>
+button{
+	display: block;
+	padding: 5px 10px;
+	margin: 5px;
+}
+div {
+	display: flex;
+	align-items: flex-start;
+	flex-direction: column;
+}
+div button:nth-child(1) {
+	order: 1;
+}
+div button:nth-child(2)  {
+	order: 2;
+}
+div button:nth-child(3)  {
+	order: 3;
+}
+</style>
+</head>
+<body>
+
+<span style="font-size: 18px;">Задача №5.</span>
+<p style="padding-left: 30px;">Cоздать 3 кнопки с названиями 1, 2, 3, расположенные друг над другом.<br><br> <strong>Начальный вид:</strong> <br> <img src="http://megasoft.ru/1.gif" alt=""><br><br> <strong>Нажали на любую кнопку, меняется порядок на:</strong><br> <img src="http://megasoft.ru/2.gif" alt=""><br><br> <strong>Нажали на любую кнопку, меняется порядок на:</strong> <br> <img src="http://megasoft.ru/3.gif" alt=""><br><br> <strong>Нажали на любую кнопку, меняется порядок на: </strong><br> <img src="http://megasoft.ru/4.gif" alt=""><br><br> Код должен быть написан с ипользованием библиотеки jQuery.</p>
+
+<div>
+  <button>1</button>
+  <button>2</button>
+  <button>3</button>
+</div>
+
+<script>
+	$("button").on("click", function(){
+/*
+	Классический: при нажатии на любую кнопку, берём её и вставляем
+	в этот же блок div-а в конец...
+*/
+		//$(this).parent().append( $("button")[0] );
+/*
+	Второй вариант: можно поиграться с флексом :) 
+	читаем order у кнопок и уменьшаем на единицу, 
+	если o-1 получается меньше единицы, ставим тройку, т.е. в конец...
+*/
+		$("button").each(function(){
+			let o = $(this).css("order");
+			$(this).css({ order: o < 2 ? 3 : o - 1 });
+		});
+	});
+</script>
+</body>
+</html>
